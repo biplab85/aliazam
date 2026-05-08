@@ -46,10 +46,8 @@ next-env.d.ts
 # Playwright (browser-MCP test artifacts)
 .playwright-mcp/
 
-# Local screenshots from dev / browser-MCP testing — not part of source
-/aliazam-fullpage-*.png
-/hero-*.png
-/sec-*.png
-/section-*.png
-/slider-*.png
-/vp-*.png
+# Local screenshots from dev / browser-MCP testing — not part of source.
+# `/` prefix scopes the rule to the project root; assets in /public/ are unaffected.
+/*.png
+/*.jpg
+/*.jpeg

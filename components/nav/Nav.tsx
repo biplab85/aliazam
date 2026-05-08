@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
+  ChevronDown,
   Menu,
   X,
   User,
@@ -23,9 +25,19 @@ const NAV_ICON: Record<NavIconName, LucideIcon> = {
   mail: Mail,
 };
 
+/** True when `href` is a full route (starts with "/") that matches the
+ *  current pathname. Hash anchors like "#about" never match — they're not
+ *  routes, so we leave their active state to scroll-spy elsewhere. */
+function useIsActive() {
+  const pathname = usePathname();
+  const norm = (s: string) => s.replace(/\/+$/, "") || "/";
+  return (href: string) => href.startsWith("/") && norm(pathname) === norm(href);
+}
+
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const isActive = useIsActive();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -70,16 +82,90 @@ export function Nav() {
           <ul className="hidden gap-6 lg:flex">
             {nav.map((item) => {
               const Icon = NAV_ICON[item.icon];
+              const active = isActive(item.href);
+              const hasChildren = !!item.children?.length;
               return (
-                <li key={item.href}>
-                  <a
+                <li key={item.href} className="group/item relative">
+                  <Link
                     href={item.href}
-                    className="group relative inline-flex items-center gap-1.5 text-sm font-medium text-ink-2 transition-colors hover:text-ink"
+                    aria-current={active ? "page" : undefined}
+                    aria-haspopup={hasChildren ? "menu" : undefined}
+                    className={cn(
+                      "group relative inline-flex items-center gap-1.5 text-sm font-medium transition-colors",
+                      active
+                        ? "is-active text-ink"
+                        : "text-ink-2 hover:text-ink",
+                    )}
                   >
-                    <Icon className="size-[14px] text-ink-3 transition-colors group-hover:text-accent" strokeWidth={1.75} />
+                    <Icon
+                      className={cn(
+                        "size-[14px] transition-colors",
+                        active
+                          ? "text-accent"
+                          : "text-ink-3 group-hover:text-accent",
+                      )}
+                      strokeWidth={1.75}
+                    />
                     {item.label}
-                    <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
-                  </a>
+                    {hasChildren && (
+                      <ChevronDown
+                        className={cn(
+                          "size-3 transition-transform duration-300 group-hover/item:rotate-180",
+                          active ? "text-accent" : "text-ink-3",
+                        )}
+                        strokeWidth={2}
+                      />
+                    )}
+                    <span
+                      className={cn(
+                        "absolute -bottom-1.5 left-0 h-px bg-accent transition-all duration-300 ease-out",
+                        active ? "w-full" : "w-0 group-hover:w-full",
+                      )}
+                    />
+                  </Link>
+
+                  {/* Desktop dropdown — hover-reveals from the parent <li>.
+                      Hidden by default, becomes visible/clickable when the
+                      parent is hovered or has keyboard focus. */}
+                  {hasChildren && (
+                    <div
+                      role="menu"
+                      className="invisible absolute left-1/2 top-full z-50 mt-3 w-[260px] -translate-x-1/2 translate-y-1 opacity-0 transition-all duration-300 ease-out group-hover/item:visible group-hover/item:translate-y-0 group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:translate-y-0 group-focus-within/item:opacity-100"
+                    >
+                      <div className="overflow-hidden rounded-2xl border border-line bg-bg-elev/95 p-1.5 shadow-[0_24px_60px_-22px_rgba(10,10,10,0.32)] backdrop-blur-md">
+                        {/* Tiny arrow pointing back at the parent */}
+                        <span
+                          aria-hidden
+                          className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rotate-45 border-l border-t border-line bg-bg-elev"
+                        />
+                        <ul className="grid gap-0.5">
+                          {item.children!.map((child) => (
+                            <li key={child.href}>
+                              <Link
+                                href={child.href}
+                                role="menuitem"
+                                className="group/sub flex items-center gap-2 rounded-xl px-3 py-2.5 text-[13.5px] tracking-[-0.005em] text-ink-2 transition-colors duration-200 hover:bg-bg-warm hover:text-ink"
+                              >
+                                <span
+                                  aria-hidden
+                                  className="size-1 shrink-0 rounded-full bg-[color:var(--color-gold)] opacity-60 transition-opacity duration-200 group-hover/sub:opacity-100"
+                                />
+                                <span className="font-serif text-[14.5px] tracking-[-0.005em]">
+                                  {child.label}
+                                </span>
+                                <span
+                                  aria-hidden
+                                  className="ml-auto -translate-x-1 text-[color:var(--color-accent)] opacity-0 transition-all duration-200 group-hover/sub:translate-x-0 group-hover/sub:opacity-100"
+                                >
+                                  →
+                                </span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </li>
               );
             })}
@@ -93,9 +179,9 @@ export function Nav() {
               <span className="size-[5px] rounded-full bg-accent" />
               {site.phone}
             </a>
-            <a href="#contact" className="btn btn-primary btn-sm">
+            <Link href="/#contact" className="btn btn-primary btn-sm">
               Book a call <span className="arrow">→</span>
-            </a>
+            </Link>
             <button
               type="button"
               onClick={() => setOpen(true)}
@@ -138,28 +224,70 @@ export function Nav() {
               <ul className="grid gap-4 font-serif text-3xl text-ink">
                 {nav.map((item) => {
                   const Icon = NAV_ICON[item.icon];
+                  const active = isActive(item.href);
+                  const hasChildren = !!item.children?.length;
                   return (
-                    <li key={item.href}>
-                      <a
+                    <li key={item.href} className="grid gap-3">
+                      <Link
                         href={item.href}
                         onClick={() => setOpen(false)}
-                        className="group inline-flex items-center gap-4"
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "group inline-flex items-center gap-4 transition-colors",
+                          active && "is-active text-accent",
+                        )}
                       >
-                        <Icon className="size-5 text-ink-3 transition-colors group-hover:text-accent" strokeWidth={1.5} />
-                        {item.label}
-                      </a>
+                        <Icon
+                          className={cn(
+                            "size-5 transition-colors",
+                            active
+                              ? "text-accent"
+                              : "text-ink-3 group-hover:text-accent",
+                          )}
+                          strokeWidth={1.5}
+                        />
+                        <span className="inline-flex items-center gap-3">
+                          {item.label}
+                          {active && (
+                            <span
+                              aria-hidden
+                              className="size-1.5 rounded-full bg-accent"
+                            />
+                          )}
+                        </span>
+                      </Link>
+                      {/* Mobile sub-menu — indented chips under parent */}
+                      {hasChildren && (
+                        <ul className="ml-9 grid gap-2 border-l border-line pl-4 text-base">
+                          {item.children!.map((child) => (
+                            <li key={child.href}>
+                              <Link
+                                href={child.href}
+                                onClick={() => setOpen(false)}
+                                className="inline-flex items-center gap-2 font-serif text-[16px] tracking-[-0.005em] text-ink-2 transition-colors hover:text-accent"
+                              >
+                                <span
+                                  aria-hidden
+                                  className="size-1 rounded-full bg-[color:var(--color-gold)]"
+                                />
+                                {child.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
                   );
                 })}
               </ul>
             </nav>
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               onClick={() => setOpen(false)}
               className="btn btn-primary mt-10 w-full justify-center"
             >
               Book a call <span className="arrow">→</span>
-            </a>
+            </Link>
           </div>
         </div>
       )}

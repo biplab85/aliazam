@@ -110,7 +110,7 @@ function InvitationCard() {
   const mailHref = `mailto:${site.email}`;
 
   return (
-    <article className="group relative overflow-hidden rounded-[28px] border border-line-strong bg-bg-elev/85 p-8 shadow-deep backdrop-blur-md md:p-12 lg:p-16">
+    <article className="group relative overflow-hidden rounded-[24px] border border-line-strong bg-bg-elev/85 p-6 shadow-deep backdrop-blur-md md:p-9 lg:p-11">
       {/* Inner ambient mesh — soft accent + gold blooms inside the card */}
       <div
         aria-hidden
@@ -122,107 +122,122 @@ function InvitationCard() {
         }}
       />
 
-      {/* Status pill */}
-      <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-line bg-bg-elev/90 px-3.5 py-1.5 backdrop-blur-sm">
-        <span className="relative inline-flex size-2.5 items-center justify-center">
-          <span className="absolute inline-flex size-full rounded-full bg-emerald-500 opacity-55 [animation:ping_2.4s_cubic-bezier(0,0,0.2,1)_infinite]" />
-          <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
-        </span>
-        <span className="text-[12px] font-medium text-ink-2">
-          Now accepting consultations
-        </span>
-      </div>
+      {/* CTA-style layout — pitch on the left, action on the right.
+          Same content as before, just split into two columns on lg+ so the
+          card reads as a banner instead of a tall stack. */}
+      <div className="grid gap-9 lg:grid-cols-[1fr_1fr] lg:items-start lg:gap-10">
+        {/* ============== LEFT — pitch ============== */}
+        <div>
+          {/* Status pill */}
+          <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-line bg-bg-elev/90 px-3.5 py-1.5 backdrop-blur-sm">
+            <span className="relative inline-flex size-2.5 items-center justify-center">
+              <span className="absolute inline-flex size-full rounded-full bg-emerald-500 opacity-55 [animation:ping_2.4s_cubic-bezier(0,0,0.2,1)_infinite]" />
+              <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+            </span>
+            <span className="text-[12px] font-medium text-ink-2">
+              Now accepting consultations
+            </span>
+          </div>
 
-      {/* Headline */}
-      <h2
-        className="font-serif font-normal tracking-[-0.025em] text-ink"
-        style={{
-          fontSize: "clamp(36px, 5vw, 64px)",
-          lineHeight: 1.04,
-        }}
-      >
-        Helping you find{" "}
-        <em className="text-accent">the best property.</em>
-      </h2>
+          {/* Headline */}
+          <h2
+            className="font-serif font-normal tracking-[-0.025em] text-ink"
+            style={{
+              fontSize: "clamp(28px, 3.6vw, 48px)",
+              lineHeight: 1.05,
+            }}
+          >
+            Helping you find{" "}
+            <em className="text-accent">the best property.</em>
+          </h2>
 
-      {/* Lede */}
-      <p className="mt-6 max-w-[58ch] text-[17px] leading-[1.6] text-ink-2">
-        {finalCta.sub}
-      </p>
+          {/* Lede */}
+          <p className="mt-4 max-w-[52ch] text-[15.5px] leading-[1.55] text-ink-2">
+            {finalCta.sub}
+          </p>
 
-      {/* The centrepiece — oversized clickable phone number */}
-      <a href={telHref} className="group/tel mt-12 block">
-        <span className="mb-2 block text-[10.5px] font-medium uppercase tracking-[0.18em] text-ink-3">
-          Or call directly
-        </span>
-        <span
-          className="block font-serif tabular-nums text-ink transition-colors duration-300 group-hover/tel:text-accent"
-          style={{
-            fontSize: "clamp(38px, 5vw, 68px)",
-            lineHeight: 1.05,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {site.phone}
-        </span>
-      </a>
-
-      {/* Eyebrow divider */}
-      <div className="my-10 flex items-center gap-3">
-        <span className="h-px w-10 bg-accent" />
-        <span className="text-[10.5px] font-medium uppercase tracking-[0.18em] text-ink-3">
-          or schedule a call
-        </span>
-        <span className="h-px flex-1 bg-line" />
-      </div>
-
-      {/* CTAs */}
-      <div className="flex flex-wrap items-center gap-3">
-        <a
-          href={finalCta.primary.href}
-          className="btn btn-primary px-7 py-4 text-base"
-        >
-          Book a 15-min consult <span className="arrow">→</span>
-        </a>
-        <a
-          href={mailHref}
-          className="btn btn-ghost px-6 py-4 text-base"
-        >
-          <Mail className="size-4" strokeWidth={1.75} />
-          Email Ali
-          <ArrowUpRight
-            className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            strokeWidth={1.75}
-          />
-        </a>
-      </div>
-
-      {/* Footer row — signature + compliance */}
-      <div className="mt-14 grid gap-5 border-t border-line pt-7 md:grid-cols-[1fr_auto] md:items-center">
-        {/* Signature */}
-        <div className="flex items-center gap-3.5">
-          <span className="grid size-12 place-items-center rounded-full border border-line-strong bg-bg-warm font-serif text-[18px] tracking-[-0.02em] text-ink">
-            AA
-          </span>
-          <div>
-            <p className="font-serif text-[18px] tracking-[-0.01em] text-ink">
-              <em className="text-accent">— Ali Azam</em>
-            </p>
-            <p className="mt-0.5 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-3">
-              {about.name === "Ali Azam"
-                ? "Realtor® · Mortgage Agent · since 2010"
-                : "Realtor since 2010"}
-            </p>
+          {/* Signature — pulled up from the old footer */}
+          <div className="mt-7 flex items-center gap-3.5 border-t border-line pt-5">
+            <span className="grid size-11 place-items-center rounded-full border border-line-strong bg-bg-warm font-serif text-[16px] tracking-[-0.02em] text-ink">
+              AA
+            </span>
+            <div>
+              <p className="font-serif text-[16px] tracking-[-0.01em] text-ink">
+                <em className="text-accent">— Ali Azam</em>
+              </p>
+              <p className="mt-0.5 text-[10.5px] font-medium uppercase tracking-[0.14em] text-ink-3">
+                {about.name === "Ali Azam"
+                  ? "Realtor® · Mortgage Agent · since 2010"
+                  : "Realtor since 2010"}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Trust marks */}
-        <div className="flex flex-wrap gap-x-3 gap-y-2 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-3 md:justify-end">
-          <span>RECO Licensed</span>
-          <span className="text-line-strong">·</span>
-          <span>FSRA Agent</span>
-          <span className="text-line-strong">·</span>
-          <span>Right At Home Realty</span>
+        {/* ============== RIGHT — action ============== */}
+        <div className="lg:pl-2">
+          {/* Phone centrepiece — clickable, smaller than before so it sits
+              comfortably in a column rather than a full-width hero number. */}
+          <a href={telHref} className="group/tel block">
+            <span className="mb-2 block text-[10.5px] font-medium uppercase tracking-[0.18em] text-ink-3">
+              Or call directly
+            </span>
+            <span
+              className="block font-serif tabular-nums text-ink transition-colors duration-300 group-hover/tel:text-accent"
+              style={{
+                fontSize: "clamp(30px, 3.6vw, 50px)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              {site.phone}
+            </span>
+          </a>
+
+          {/* Eyebrow divider */}
+          <div className="my-6 flex items-center gap-3">
+            <span className="h-px w-10 bg-accent" />
+            <span className="text-[10.5px] font-medium uppercase tracking-[0.18em] text-ink-3">
+              or schedule a call
+            </span>
+            <span className="h-px flex-1 bg-line" />
+          </div>
+
+          {/* CTAs — equal-width pair sharing one row.
+              `grid-cols-2` enforces same width; `min-w-0` lets cells shrink
+              instead of overflowing; `w-full justify-center` makes each
+              button fill its cell. The long label is allowed to wrap
+              (`whitespace-normal`, `text-center`, `leading-tight`) so it
+              never gets clipped at narrow widths — grid row stretch keeps
+              both buttons the same height when wrapping kicks in. */}
+          <div className="grid grid-cols-2 gap-3">
+            <a
+              href={finalCta.primary.href}
+              className="btn btn-primary w-full min-w-0 justify-center whitespace-normal px-3 py-3 text-center text-sm leading-tight"
+            >
+              Book a 15-min consult <span className="arrow">→</span>
+            </a>
+            <a
+              href={mailHref}
+              className="btn btn-ghost w-full min-w-0 justify-center whitespace-normal px-3 py-3 text-center text-sm leading-tight"
+            >
+              <Mail className="size-4 shrink-0" strokeWidth={1.75} />
+              Email Ali
+              <ArrowUpRight
+                className="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                strokeWidth={1.75}
+              />
+            </a>
+          </div>
+
+          {/* Trust marks — kept verbatim, just compactly under the CTAs */}
+          <div className="mt-6 flex flex-wrap gap-x-3 gap-y-2 border-t border-line pt-5 text-[10.5px] font-medium uppercase tracking-[0.14em] text-ink-3">
+            <span>RECO Licensed</span>
+            <span className="text-line-strong">·</span>
+            <span>FSRA Agent</span>
+            <span className="text-line-strong">·</span>
+            <span>Right At Home Realty</span>
+          </div>
         </div>
       </div>
 

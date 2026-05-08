@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import {
   Facebook,
   Instagram,
@@ -11,6 +14,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { site, footer } from "@/content";
+import { cn } from "@/lib/cn";
 
 /**
  * Premium footer.
@@ -29,6 +33,10 @@ import { site, footer } from "@/content";
  */
 export function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+  const norm = (s: string) => s.replace(/\/+$/, "") || "/";
+  const isActive = (href: string) =>
+    href.startsWith("/") && norm(pathname) === norm(href);
 
   return (
     <footer className="relative isolate overflow-hidden bg-ink text-bg/[0.78]">
@@ -147,22 +155,43 @@ export function Footer() {
                 {group.heading}
               </h4>
               <ul className="grid gap-3.5 text-[14px]">
-                {group.links.map((l) => (
-                  <li key={`${group.heading}-${l.label}`}>
-                    <a
-                      href={l.href}
-                      className="group/link inline-flex items-center gap-1.5 text-bg/75 transition-colors duration-300 hover:text-white"
-                    >
-                      <span>{l.label}</span>
-                      <span
-                        aria-hidden
-                        className="-translate-x-1 opacity-0 transition-all duration-300 group-hover/link:translate-x-0 group-hover/link:opacity-100"
+                {group.links.map((l) => {
+                  const active = isActive(l.href);
+                  return (
+                    <li key={`${group.heading}-${l.label}`}>
+                      <a
+                        href={l.href}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "group/link inline-flex items-center gap-1.5 transition-colors duration-300",
+                          active
+                            ? "is-active font-medium text-white"
+                            : "text-bg/75 hover:text-white",
+                        )}
                       >
-                        →
-                      </span>
-                    </a>
-                  </li>
-                ))}
+                        {/* Active marker — small gold dot before the label */}
+                        {active && (
+                          <span
+                            aria-hidden
+                            className="size-1.5 rounded-full bg-[color:var(--color-gold)]"
+                          />
+                        )}
+                        <span>{l.label}</span>
+                        <span
+                          aria-hidden
+                          className={cn(
+                            "transition-all duration-300",
+                            active
+                              ? "translate-x-0 text-[color:var(--color-gold)] opacity-100"
+                              : "-translate-x-1 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-100",
+                          )}
+                        >
+                          →
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}

@@ -19,8 +19,8 @@
   --color-line: #e2e0d7;
   --color-line-strong: #c9c6ba;
 
-  --color-accent: #1a4d3a;
-  --color-accent-2: #2a6b53;
+  --color-accent: #441c7c;
+  --color-accent-2: #5a2a9c;
   --color-accent-soft: #e5eee9;
 
   --color-gold: #b8945a;
@@ -82,6 +82,21 @@
   ::selection {
     background-color: var(--color-accent);
     color: #fff;
+  }
+
+  /* Every interactive control gets the pointer cursor — covers <button>,
+     [role="button"], <summary>, and form submit/reset/file inputs. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  input[type="submit"]:not(:disabled),
+  input[type="reset"]:not(:disabled),
+  input[type="file"] {
+    cursor: pointer;
+  }
+  button:disabled,
+  [role="button"][aria-disabled="true"] {
+    cursor: not-allowed;
   }
 
   /* Slim scrollbar */
