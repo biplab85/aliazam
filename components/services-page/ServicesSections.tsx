@@ -319,7 +319,7 @@ export function ServicesIntro() {
             className="rounded-[22px] border border-line bg-bg-elev/85 p-6 backdrop-blur-md md:p-8"
           >
             <span className="mb-4 block text-[10.5px] font-medium uppercase tracking-[0.18em] text-ink-3">
-              What's included
+              What&apos;s included
             </span>
             <ul className="grid gap-3">
               {servicesPage.intro.bullets.map((b, i) => (

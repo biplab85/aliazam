@@ -357,6 +357,10 @@ function MonogramCrest() {
           href="#crest-arc-bottom"
           startOffset="50%"
           textAnchor="middle"
+          // SVG 2's `side` attribute (renders text on the inside/outside of
+          // the path so the bottom arc reads right-way-up) is supported by
+          // browsers but missing from React's SVGTextPathElement typings.
+          // @ts-expect-error -- SVG 2 attr not in @types/react yet
           side="right"
         >
           {aboutPage.hero.crest.bottomArc}

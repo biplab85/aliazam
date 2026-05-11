@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import {
-  animate,
   motion,
-  useInView,
   useScroll,
   useTransform,
   useSpring,
-  type MotionValue,
 } from "framer-motion";
 import {
   ArrowUpRight,
@@ -287,32 +284,6 @@ function MarketStat({
       </dt>
     </div>
   );
-}
-
-function CountUp({
-  to,
-  format = (n) => Math.round(n).toLocaleString(),
-  duration = 1.6,
-}: {
-  to: number;
-  format?: (n: number) => string;
-  duration?: number;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15%" });
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, to, {
-      duration,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => setDisplay(v),
-    });
-    return () => controls.stop();
-  }, [inView, to, duration]);
-
-  return <span ref={ref}>{format(display)}</span>;
 }
 
 /**

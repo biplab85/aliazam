@@ -32,8 +32,6 @@ export function FeaturedListing() {
     return () => clearInterval(id);
   }, []);
 
-  const listing = listings[i];
-
   return (
     <div className="relative">
       {/* Magazine-style index header */}
@@ -54,7 +52,6 @@ export function FeaturedListing() {
         {listings.map((l, idx) => {
           const active = idx === i;
           return (
-            // eslint-disable-next-line @next/next/no-img-element
             <motion.img
               key={l.slug}
               src={l.image}
