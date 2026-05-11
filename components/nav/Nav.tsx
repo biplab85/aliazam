@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Calculator,
   ChevronDown,
   Menu,
   X,
@@ -14,7 +15,8 @@ import {
   Mail,
   type LucideIcon,
 } from "lucide-react";
-import { nav, site, type NavIconName } from "@/content";
+import { mortgageCalculator, nav, site, type NavIconName } from "@/content";
+import { MortgageCalculator } from "@/components/mortgage/MortgageCalculator";
 import { cn } from "@/lib/cn";
 
 const NAV_ICON: Record<NavIconName, LucideIcon> = {
@@ -37,6 +39,7 @@ function useIsActive() {
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mcOpen, setMcOpen] = useState(false);
   const isActive = useIsActive();
 
   useEffect(() => {
@@ -179,9 +182,21 @@ export function Nav() {
               <span className="size-[5px] rounded-full bg-accent" />
               {site.phone}
             </a>
-            <Link href="/#contact" className="btn btn-primary btn-sm">
-              Book a call <span className="arrow">→</span>
-            </Link>
+            {/* Mortgage Calculator trigger — opens modal client-side */}
+            <button
+              type="button"
+              onClick={() => setMcOpen(true)}
+              aria-haspopup="dialog"
+              aria-expanded={mcOpen}
+              className="group hidden items-center gap-2 rounded-full border border-line-strong bg-bg-elev/85 px-4 py-2 text-[13px] font-medium text-ink-2 backdrop-blur-sm transition-all duration-300 hover:border-[color:var(--color-accent)] hover:text-accent md:inline-flex"
+            >
+              <Calculator
+                className="size-3.5 text-[color:var(--color-gold)] transition-transform duration-300 group-hover:rotate-[-6deg]"
+                strokeWidth={1.75}
+              />
+              <span className="hidden lg:inline">{mortgageCalculator.triggerLabel}</span>
+              <span className="lg:hidden">Calculator</span>
+            </button>
             <button
               type="button"
               onClick={() => setOpen(true)}
@@ -281,16 +296,28 @@ export function Nav() {
                 })}
               </ul>
             </nav>
-            <Link
-              href="/#contact"
-              onClick={() => setOpen(false)}
-              className="btn btn-primary mt-10 w-full justify-center"
+            {/* Mortgage Calculator trigger inside the mobile drawer */}
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                setMcOpen(true);
+              }}
+              className="mt-10 inline-flex w-full items-center justify-center gap-2 rounded-full border border-line-strong bg-bg-elev/85 px-5 py-3.5 text-[15px] font-medium text-ink-2 transition-all duration-300 hover:border-[color:var(--color-accent)] hover:text-accent"
             >
-              Book a call <span className="arrow">→</span>
-            </Link>
+              <Calculator
+                className="size-4 text-[color:var(--color-gold)]"
+                strokeWidth={1.75}
+              />
+              {mortgageCalculator.triggerLabel}
+            </button>
           </div>
         </div>
       )}
+
+      {/* Mortgage calculator modal — mounted at the root of the nav so it
+          sits above every other layer (z-[80]) and survives route changes. */}
+      <MortgageCalculator open={mcOpen} onClose={() => setMcOpen(false)} />
     </>
   );
 }

@@ -205,7 +205,7 @@ export function Listings() {
           <motion.a
             variants={reveal}
             href="#contact"
-            className="btn btn-ghost self-start md:self-end"
+            className="btn btn-ghost justify-center self-start md:justify-normal md:self-end"
           >
             View all listings <span className="arrow">→</span>
           </motion.a>

@@ -424,7 +424,6 @@ export const footer = {
   tagline: "For All Your Real Estate Needs",
   // src: source copyright. Year auto-updated at render.
   copyright: "Ali Azam",
-  legal: "Realtor®, sales representative · Independently owned and operated",
   groups: [
     {
       heading: "Navigate",
@@ -439,6 +438,76 @@ export const footer = {
       links: services.map((s) => ({ label: s.title.replace(" Services", ""), href: "#services" })),
     },
   ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Mortgage Calculator — modal triggered from the header.
+// Field labels mirror aliazam.ca/mortgage-calculator/ verbatim. The math
+// uses the same standard amortization formula the source plugin runs:
+//   M = P · r·(1+r)^n / ((1+r)^n − 1)   (monthly compounding, cp = pp = 12)
+// ---------------------------------------------------------------------------
+
+export const mortgageCalculator = {
+  triggerLabel: "Mortgage Calculator",
+  modal: {
+    eyebrow: "Tools",
+    headline: { lead: "Mortgage", emphasis: "Calculator." },
+    lede: "Estimate your monthly payment. Adjust the four values and press calculate — the math runs locally, no data leaves the page.",
+    closeLabel: "Close",
+    submitLabel: "Calculate",
+    resetLabel: "Recalculate",
+    fields: {
+      totalAmount: {
+        label: "Total Amount ($)",
+        placeholder: "$",
+        defaultValue: 300000,
+      },
+      downPayment: {
+        label: "Down Payment ($)",
+        placeholder: "$",
+        defaultValue: 60000,
+      },
+      interestRate: {
+        label: "Interest Rate (%)",
+        placeholder: "%",
+        defaultValue: 5,
+      },
+      amortization: {
+        label: "Amortization Period (years)",
+        placeholder: "years",
+        defaultValue: 30,
+      },
+    },
+    result: {
+      eyebrow: "Result",
+      kpis: {
+        monthly: "Total monthly payment",
+        // {n} replaced at render with the integer payment count.
+        totalPayments: "Total of {n} payments",
+        payoffDate: "Payoff date",
+      },
+      chart: {
+        title: "Yearly breakdown",
+        legend: {
+          principal: "Principal",
+          interest: "Interest",
+          balance: "Balance",
+        },
+      },
+      table: {
+        title: "Amortization schedule",
+        headers: {
+          date: "Date",
+          principal: "Principal",
+          interest: "Interest",
+          balance: "Balance",
+        },
+        totalsLabel: "Totals",
+      },
+      footer:
+        "Estimate uses standard monthly compounding (the same formula as the source plugin). Canadian mortgages by law compound semi-annually — actual lender quotes may differ slightly. Speak with Ali for a personalised pre-approval.",
+    },
+  },
 } as const;
 
 // ---------------------------------------------------------------------------

@@ -12,6 +12,7 @@ import {
   Mail,
   Award,
   ArrowUpRight,
+  Heart,
 } from "lucide-react";
 import { site, footer } from "@/content";
 import { cn } from "@/lib/cn";
@@ -80,7 +81,7 @@ export function Footer() {
             {/* Primary CTA */}
             <a
               href="#contact"
-              className="group inline-flex items-center gap-2 self-end rounded-full bg-white px-6 py-3.5 text-[14px] font-medium text-ink transition-all duration-300 hover:bg-bg"
+              className="group inline-flex items-center gap-2 justify-self-center self-end rounded-full bg-white px-6 py-3.5 text-[14px] font-medium text-ink transition-all duration-300 hover:bg-bg md:justify-self-auto"
             >
               Book a 15-min consult
               <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -89,9 +90,12 @@ export function Footer() {
         </div>
 
         {/* ---------- 2. Footer columns ---------- */}
-        <div className="grid gap-12 py-14 md:grid-cols-[1.6fr_1fr_1fr_1.3fr] md:gap-14 md:py-16">
+        {/* Mobile: 2 cols — Brand & Contact span both, so Navigate + Services
+            share a single row in the middle. Desktop overrides via
+            `md:grid-cols-[1.6fr_1fr_1fr_1.3fr]` + `md:col-span-1`. */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-14 md:grid-cols-[1.6fr_1fr_1fr_1.3fr] md:gap-14 md:py-16">
           {/* Brand column */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={site.logoFooter}
@@ -197,7 +201,7 @@ export function Footer() {
           ))}
 
           {/* Contact column */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <h4 className="mb-6 text-[10.5px] font-medium uppercase tracking-[0.16em] text-bg/45">
               Contact
             </h4>
@@ -263,7 +267,16 @@ export function Footer() {
           <span>
             © {footer.copyright} · {year} · All rights reserved.
           </span>
-          <span className="text-bg/35">{footer.legal}</span>
+          <span className="inline-flex items-center gap-1.5 text-bg/35">
+            Made by
+            <Heart
+              className="size-3.5 text-[color:var(--color-gold)]"
+              fill="currentColor"
+              strokeWidth={0}
+              aria-hidden
+            />
+            Sklentr
+          </span>
         </div>
       </div>
     </footer>

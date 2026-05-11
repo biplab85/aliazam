@@ -178,7 +178,7 @@ export function Process() {
             aria-hidden
             viewBox="0 0 80 1000"
             preserveAspectRatio="none"
-            className="absolute left-[6px] top-[40px] bottom-[40px] w-[60px] md:hidden"
+            className="absolute right-[6px] top-[40px] bottom-[40px] w-[60px] md:hidden"
           >
             <motion.path
               d={MOBILE_PATH}

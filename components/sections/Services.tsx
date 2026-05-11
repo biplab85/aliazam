@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { services, servicesIntro, type Service } from "@/content";
@@ -37,8 +37,22 @@ export function Services() {
   const iconRotate = useTransform(scrollYProgress, [0, 1], [-3, 3]);
   // Card parallax — all three start aligned, then drift as the section
   // scrolls. Card 1 is the still anchor; card 2 drifts DOWN; card 3 UP.
+  // Only applied at md+ where the cards sit side-by-side. On mobile they
+  // stack vertically, so the vertical drift would push them into each other.
   const card2Y = useTransform(scrollYProgress, [0, 1], [0, 80]);
   const card3Y = useTransform(scrollYProgress, [0, 1], [0, -64]);
+
+  // md breakpoint = 768px (Tailwind default). Match this to the grid's
+  // `md:grid-cols-3` switch so parallax only activates when the layout
+  // becomes horizontal.
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <section
@@ -107,7 +121,15 @@ export function Services() {
             // Outer wrapper handles the reveal animation (opacity/y rise on mount).
             // Inner motion.div handles the scroll-driven parallax — composes with
             // reveal because each level has its own transform.
-            const parallaxY = i === 1 ? card2Y : i === 2 ? card3Y : undefined;
+            // Gate parallax to desktop: on mobile cards stack vertically and the
+            // drift would cause adjacent cards to overlap.
+            const parallaxY = isDesktop
+              ? i === 1
+                ? card2Y
+                : i === 2
+                  ? card3Y
+                  : undefined
+              : undefined;
             return (
               <motion.div
                 key={s.id}

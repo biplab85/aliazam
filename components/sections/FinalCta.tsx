@@ -210,7 +210,7 @@ function InvitationCard() {
               (`whitespace-normal`, `text-center`, `leading-tight`) so it
               never gets clipped at narrow widths — grid row stretch keeps
               both buttons the same height when wrapping kicks in. */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <a
               href={finalCta.primary.href}
               className="btn btn-primary w-full min-w-0 justify-center whitespace-normal px-3 py-3 text-center text-sm leading-tight"
