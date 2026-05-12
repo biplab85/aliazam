@@ -2,42 +2,44 @@
 
 /* =========================================================================
    THEME — Tailwind v4 CSS-first config.
-   These tokens are exposed as Tailwind utilities (e.g. bg-bg, text-ink-2,
-   text-display, font-serif).
+   Restrained, broker-grade palette:
+     • Navy primary  • Muted gold accent  • Warm-white background
+   These tokens render as Tailwind utilities (bg-bg, text-ink, text-accent…).
    ========================================================================= */
 @theme {
   /* Colors */
-  --color-bg: #fafaf7;
-  --color-bg-elev: #ffffff;
-  --color-bg-muted: #f2f1ec;
-  --color-bg-warm: #ece9e0;
+  --color-bg: #f8f6f2;            /* warm white — main page bg */
+  --color-bg-elev: #ffffff;       /* cards, modals, nav-on-scroll */
+  --color-bg-muted: #efeae0;      /* soft beige — alt section bg */
+  --color-bg-warm: #e8e1d2;       /* deeper beige for hairlines/chips */
 
-  --color-ink: #0a0a0a;
-  --color-ink-2: #2d2d2a;
-  --color-ink-3: #6b6a63;
+  --color-ink: #1a1a1a;           /* headings */
+  --color-ink-2: #3a3a38;         /* body */
+  --color-ink-3: #6b6b6b;         /* muted captions, eyebrows */
 
-  --color-line: #e2e0d7;
-  --color-line-strong: #c9c6ba;
+  --color-line: #e5e1d6;          /* hairline border */
+  --color-line-strong: #d3cdbc;   /* card border */
 
-  --color-accent: #441c7c;
-  --color-accent-2: #5a2a9c;
-  --color-accent-soft: #e5eee9;
+  --color-accent: #360a72;        /* deep royal purple — logo brand */
+  --color-accent-2: #4a1599;      /* purple hover */
+  --color-accent-soft: #ede4f4;   /* purple tint background */
 
-  --color-gold: #b8945a;
-  --color-gold-soft: #f2ead9;
+  /* Secondary accent unified to brand purple — single-colour palette */
+  --color-gold: #360a72;          /* purple (unified) */
+  --color-gold-soft: #ede4f4;     /* purple tint background */
 
-  /* Fonts — wired up via next/font in app/layout.tsx; see CSS vars below. */
-  --font-serif: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
-  --font-sans: var(--font-hanken-grotesk), system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Fonts — wired up via next/font in app/layout.tsx. */
+  --font-serif: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  /* Radii */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* Radii — modest, broker-professional (no bubbly pills on cards) */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
 
-  /* Container width — used as max-w-container */
-  --container-7xl: 1240px;
+  /* Container width */
+  --container-7xl: 1200px;
 }
 
 /* =========================================================================
@@ -45,47 +47,36 @@
    ========================================================================= */
 :root {
   color-scheme: light only;
-
-  /* Easing tokens (used in plain CSS animations and inline styles) */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-soft: cubic-bezier(0.4, 0.14, 0.3, 1);
 
-  /* Shadows (referenced via custom utility classes below) */
-  --shadow-1: 0 1px 2px rgba(10, 10, 10, 0.04), 0 2px 6px rgba(10, 10, 10, 0.04);
-  --shadow-2: 0 8px 24px -8px rgba(10, 10, 10, 0.08), 0 2px 6px rgba(10, 10, 10, 0.04);
-  --shadow-3: 0 30px 60px -20px rgba(10, 10, 10, 0.12), 0 8px 16px -6px rgba(10, 10, 10, 0.06);
+  /* Restrained shadows — no glow, no neon */
+  --shadow-1: 0 1px 2px rgba(26, 26, 26, 0.04);
+  --shadow-2: 0 6px 18px -8px rgba(26, 26, 26, 0.08), 0 2px 4px rgba(26, 26, 26, 0.04);
+  --shadow-3: 0 20px 40px -16px rgba(26, 26, 26, 0.12), 0 4px 8px -4px rgba(26, 26, 26, 0.06);
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    scroll-behavior: smooth;
   }
   body {
     background-color: var(--color-bg);
     color: var(--color-ink-2);
     font-family: var(--font-sans);
-    font-size: 17px;
-    line-height: 1.6;
-    font-feature-settings: "ss01", "cv11";
+    font-size: 16px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
-  @media (max-width: 640px) {
-    body {
-      font-size: 16px;
-    }
-  }
 
   ::selection {
     background-color: var(--color-accent);
-    color: #fff;
+    color: var(--color-bg);
   }
 
-  /* Every interactive control gets the pointer cursor — covers <button>,
-     [role="button"], <summary>, and form submit/reset/file inputs. */
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   summary,
@@ -99,34 +90,17 @@
     cursor: not-allowed;
   }
 
-  /* Slim scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
     background: var(--color-line-strong);
     border-radius: 999px;
     border: 2px solid var(--color-bg);
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-ink-3);
-  }
-
-  /* Subtle grain overlay — fixed, multiply, never blocks pointer events */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 100;
-    opacity: 0.035;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-ink-3); }
 }
 
 /* =========================================================================
@@ -135,68 +109,71 @@
 @layer components {
   .container-x {
     width: 100%;
-    max-width: 1240px;
+    max-width: 1200px;
     margin-inline: auto;
     padding-inline: 24px;
   }
   @media (min-width: 768px) {
-    .container-x {
-      padding-inline: 48px;
-    }
+    .container-x { padding-inline: 48px; }
   }
 
+  /* Editorial small-cap label, hairline-led */
   .eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-family: var(--font-sans);
     font-weight: 500;
-    font-size: 12px;
-    letter-spacing: 0.16em;
+    font-size: 11px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--color-ink-3);
   }
   .eyebrow::before {
     content: "";
-    width: 24px;
+    width: 32px;
     height: 1px;
     background: var(--color-line-strong);
   }
-  .eyebrow.dot::before {
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: var(--color-accent);
-    animation: pulse 2.6s var(--ease) infinite;
-  }
 
+  /* Display headings — restrained scale, premium serif */
   .display-h1 {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(48px, 7.6vw, 104px);
-    line-height: 0.96;
-    letter-spacing: -0.025em;
+    font-size: clamp(40px, 5.6vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
     color: var(--color-ink);
   }
   .display-h2 {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(34px, 4.4vw, 60px);
-    line-height: 1.02;
-    letter-spacing: -0.02em;
+    font-size: clamp(30px, 3.6vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .display-h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(22px, 2.2vw, 28px);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
     color: var(--color-ink);
   }
   .display-h1 em,
-  .display-h2 em {
+  .display-h2 em,
+  .display-h3 em {
     font-style: italic;
-    color: var(--color-accent);
+    color: inherit;            /* italic accent only; colour follows parent */
   }
 
   .lede {
-    font-size: 19px;
-    line-height: 1.55;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.7;
     color: var(--color-ink-2);
-    max-width: 60ch;
+    max-width: 62ch;
   }
 
   .mono {
@@ -204,145 +181,65 @@
     font-feature-settings: "tnum";
   }
 
+  /* Buttons — squared, broker-professional, calm hover */
   .btn {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 14px 22px;
-    border-radius: 999px;
+    padding: 14px 26px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
     font-weight: 500;
-    font-size: 15px;
-    letter-spacing: -0.005em;
+    font-size: 13.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     transition:
-      transform 0.35s var(--ease),
-      background 0.35s var(--ease),
-      color 0.35s var(--ease),
-      border-color 0.35s var(--ease);
+      background 0.25s var(--ease-soft),
+      color 0.25s var(--ease-soft),
+      border-color 0.25s var(--ease-soft);
     white-space: nowrap;
   }
-  .btn .arrow {
-    transition: transform 0.35s var(--ease);
-  }
-  .btn:hover .arrow {
-    transform: translateX(4px);
-  }
   .btn-primary {
-    background: var(--color-ink);
+    background: var(--color-accent);
     color: var(--color-bg);
   }
-  .btn-primary:hover {
-    background: var(--color-accent);
-  }
+  .btn-primary:hover { background: var(--color-accent-2); }
   .btn-ghost {
     background: transparent;
     color: var(--color-ink);
     border: 1px solid var(--color-line-strong);
   }
   .btn-ghost:hover {
-    border-color: var(--color-ink);
-    background: var(--color-bg-elev);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
   .btn-sm {
-    padding: 10px 16px;
-    font-size: 14px;
+    padding: 10px 18px;
+    font-size: 12px;
   }
 
-  .shadow-soft {
-    box-shadow: var(--shadow-2);
+  /* Single hairline under section headings */
+  .rule {
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--color-gold);
   }
-  .shadow-deep {
-    box-shadow: var(--shadow-3);
-  }
+
+  .shadow-soft { box-shadow: var(--shadow-2); }
+  .shadow-deep { box-shadow: var(--shadow-3); }
 }
 
 /* =========================================================================
-   ANIMATIONS
+   ANIMATIONS — kept minimal: only fade-up + hover.
    ========================================================================= */
-@keyframes pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(26, 77, 58, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 0 7px rgba(26, 77, 58, 0);
-  }
+@keyframes fade-up {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
-@keyframes drift1 {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(-30px, 20px);
-  }
-}
-@keyframes drift2 {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(20px, -30px);
-  }
-}
-
-@keyframes bob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Slow conic rotation for the hero ambient layer */
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Mesh blob morph — slow drift + subtle scale pulse */
-@keyframes mesh-1 {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  33%      { transform: translate3d(40px, -30px, 0) scale(1.08); }
-  66%      { transform: translate3d(-20px, 30px, 0) scale(0.95); }
-}
-@keyframes mesh-2 {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(-50px, 40px, 0) scale(1.1); }
-}
-@keyframes mesh-3 {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  40%      { transform: translate3d(30px, 50px, 0) scale(0.92); }
-  75%      { transform: translate3d(-30px, -20px, 0) scale(1.06); }
-}
-
-/* Travelling hairline — horizontal, left to right */
-@keyframes line-h-travel {
-  0%   { transform: translate3d(-30%, 0, 0); opacity: 0; }
-  10%  { opacity: 0.55; }
-  85%  { opacity: 0.55; }
-  100% { transform: translate3d(130%, 0, 0); opacity: 0; }
-}
-
-/* Travelling hairline — vertical, top to bottom */
-@keyframes line-v-travel {
-  0%   { transform: translate3d(0, -30%, 0); opacity: 0; }
-  10%  { opacity: 0.45; }
-  85%  { opacity: 0.45; }
-  100% { transform: translate3d(0, 130%, 0); opacity: 0; }
+.fade-up {
+  animation: fade-up 0.8s var(--ease) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
