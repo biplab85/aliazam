@@ -1,11 +1,8 @@
 import { Nav } from "@/components/nav/Nav";
 import { Hero } from "@/components/hero/Hero";
-import { TrustStrip } from "@/components/sections/TrustStrip";
 import { Services } from "@/components/sections/Services";
-import { Process } from "@/components/sections/Process";
 import { Listings } from "@/components/sections/Listings";
-import { HomeBuying } from "@/components/sections/HomeBuying";
-import { Mission } from "@/components/sections/Mission";
+import { Process } from "@/components/sections/Process";
 import { About } from "@/components/sections/About";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { Footer } from "@/components/footer/Footer";
@@ -13,39 +10,26 @@ import { Footer } from "@/components/footer/Footer";
 export default function HomePage() {
   return (
     <>
-      {/*** Nav ***/}
       <Nav />
-
       <main>
-        {/*** Hero ***/}
+        {/* Hero — single image, calm */}
         <Hero />
 
-        {/*** Trust Strip ***/}
-        <TrustStrip />
-
-        {/*** Services ***/}
-        <Services />
-
-        {/*** Process ***/}
-        <Process />
-
-        {/*** Listings ***/}
+        {/* Featured listings — clean grid */}
         <Listings />
 
-        {/*** Home buying — categories + journey verbatim from aliazam.ca ***/}
-        <HomeBuying />
-
-        {/*** Mission — verbatim copy from aliazam.ca ***/}
-        <Mission />
-
-        {/*** About ***/}
+        {/* About — merges old About + Mission + TrustStrip facts */}
         <About />
 
-        {/*** Final CTA ***/}
+        {/* Services — merges old Services + HomeBuying */}
+        <Services />
+
+        {/* Process — three simple steps */}
+        <Process />
+
+        {/* Final CTA */}
         <FinalCta />
       </main>
-
-      {/*** Footer ***/}
       <Footer />
     </>
   );

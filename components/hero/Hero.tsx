@@ -1,179 +1,89 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { hero } from "@/content";
-import { BackgroundMesh } from "./BackgroundMesh";
-import { FeaturedListing } from "./FeaturedListing";
+import Link from "next/link";
+import { hero, site } from "@/content";
 
 /**
- * Editorial-cover hero. Replaces the previous SaaS-style "fake dashboard" pattern.
- *
- * Layout (desktop, 12-col grid):
- *   - Top hairline strip: location · role · est. year (documentary feel)
- *   - Cols 1–7: massive serif headline, asymmetric line offsets, italic accent on
- *     a single word. Below the headline: lede, dual CTAs, trust marks.
- *   - Cols 8–12: a single auto-rotating featured listing card (real photo + price).
- *
- * No floating SaaS pills, no fake "live" sparklines. Type-forward and
- * grounded in real listings — premium consulting / quiet luxury aesthetic.
+ * Hero — restrained, editorial, broker-professional.
+ * Left: eyebrow / headline / lede / CTAs / credentials row.
+ * Right: a single luxury property photograph, full-bleed to the page edge.
+ * No mesh, no parallax, no floating shapes. One photo, one message.
  */
 export function Hero() {
-  const ease = [0.22, 1, 0.36, 1] as const;
+  // Verbatim headline from content.tsx, flattened (no italic accent now).
+  const headline = hero.headlineLines.flat().join(" ");
 
   return (
-    <section className="relative overflow-hidden pt-[80px] md:pt-[88px]">
-      <BackgroundMesh />
+    <section className="relative pt-[112px] md:pt-[140px] pb-20 md:pb-28">
+      <div className="container-x">
+        <div className="grid gap-12 md:gap-16 md:grid-cols-12 md:items-center">
+          {/* Editorial copy column */}
+          <div className="md:col-span-6 fade-up">
+            <span className="eyebrow">{hero.eyebrow}</span>
 
-      <div className="container-x relative z-10">
-        {/* ---------- Main hero grid ---------- */}
-        <div className="grid grid-cols-1 gap-12 py-14 md:py-20 lg:grid-cols-12 lg:gap-12 lg:py-24">
-          {/* Headline column */}
-          <div className="flex flex-col justify-between gap-12 lg:col-span-7">
-            <motion.h1
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
-              }}
-              className="font-serif font-normal leading-[0.92] tracking-[-0.03em] text-ink"
-              style={{ fontSize: "clamp(56px, 9.4vw, 156px)" }}
-            >
-              <motion.span
-                variants={{
-                  hidden: { opacity: 0, y: 24 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
-                }}
-                className="block whitespace-nowrap"
-              >
-                Let&rsquo;s find
-              </motion.span>
-              <motion.span
-                variants={{
-                  hidden: { opacity: 0, y: 24 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
-                }}
-                className="block whitespace-nowrap lg:pl-[14%]"
-              >
-                your{" "}
-                <span className="relative inline-block">
-                  <em
-                    className="bg-clip-text text-transparent"
-                    style={{
-                      backgroundImage:
-                        "linear-gradient(110deg, #2f066d 0%, #4A1B9F 35%, #7B4FCC 62%, #2f066d 100%)",
-                    }}
-                  >
-                    dream
-                  </em>
-                  {/*
-                    Hand-drawn underline. SVG path is two soft quadratic curves;
-                    `pathLength={1}` normalizes the length so we can animate
-                    `pathLength` from 0 → 1 for the draw-in effect. Delay timed
-                    to fire just after the third headline line settles.
-                  */}
-                  <svg
-                    aria-hidden
-                    viewBox="0 0 200 14"
-                    preserveAspectRatio="none"
-                    className="pointer-events-none absolute -bottom-[0.08em] left-[2%] h-[0.16em] w-[96%] overflow-visible"
-                  >
-                    <motion.path
-                      d="M 3 8 Q 55 2, 100 6 T 197 5"
-                      fill="none"
-                      stroke="#2f066d"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                      pathLength={1}
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 1 }}
-                      transition={{
-                        pathLength: { duration: 1.1, delay: 1.35, ease },
-                        opacity: { duration: 0.25, delay: 1.35 },
-                      }}
-                    />
-                  </svg>
-                </span>
-              </motion.span>
-              <motion.span
-                variants={{
-                  hidden: { opacity: 0, y: 24 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
-                }}
-                className="block whitespace-nowrap lg:pl-[6%]"
-              >
-                home.
-              </motion.span>
-            </motion.h1>
+            <h1 className="display-h1 mt-6">
+              {headline}
+            </h1>
 
-            {/* Lede + CTAs + trust row */}
-            <div className="grid gap-7">
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.55, ease }}
-                className="lede max-w-[44ch]"
-              >
-                {hero.sub}
-              </motion.p>
+            <p className="lede mt-6">{hero.sub}</p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.7, ease }}
-                className="flex flex-wrap gap-3"
-              >
-                <a href={hero.primaryCta.href} className="btn btn-primary">
-                  {hero.primaryCta.label} <span className="arrow">→</span>
-                </a>
-                <a href={hero.secondaryCta.href} className="btn btn-ghost">
-                  {hero.secondaryCta.label} <span className="arrow">→</span>
-                </a>
-              </motion.div>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Link href={hero.primaryCta.href} className="btn btn-primary">
+                {hero.primaryCta.label}
+              </Link>
+              <Link href={hero.secondaryCta.href} className="btn btn-ghost">
+                {hero.secondaryCta.label}
+              </Link>
+            </div>
 
-              <motion.dl
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.95, ease }}
-                className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-6 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-3"
-              >
-                <TrustItem label="GTA" value="15 yrs" />
-                <Sep />
-                <TrustItem label="Licensed" value="RECO Realtor®" />
-                <Sep />
-                <TrustItem label="Mortgage" value="FSRA Agent" />
-                <Sep />
-                <TrustItem label="Brokerage" value="Right At Home Realty" />
-              </motion.dl>
+            {/* Quiet credibility row — brokerage + direct line, hairline-led */}
+            <div className="mt-12 grid gap-y-4 gap-x-10 border-t border-line pt-6 text-[13px] text-ink-3 sm:grid-cols-3">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.18em] text-ink-3/80">
+                  Brokerage
+                </div>
+                <div className="mt-1 text-ink-2">{site.brokerage}</div>
+              </div>
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.18em] text-ink-3/80">
+                  Direct
+                </div>
+                <div className="mono mt-1 text-ink-2">{site.phone}</div>
+              </div>
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.18em] text-ink-3/80">
+                  Established
+                </div>
+                <div className="mt-1 text-ink-2">2010 · GTA</div>
+              </div>
             </div>
           </div>
 
-          {/* Featured listing column */}
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.05, delay: 0.4, ease }}
-            className="lg:col-span-5 lg:pl-2"
-          >
-            <FeaturedListing />
-          </motion.div>
+          {/* Image column — single cinematic photograph */}
+          <div className="md:col-span-6 fade-up">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md bg-bg-muted md:aspect-[5/6]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/50.webp"
+                alt="Greater Toronto Area property — featured by Ali Azam"
+                className="absolute inset-0 size-full object-cover"
+                loading="eager"
+                fetchPriority="high"
+                width={1200}
+                height={1500}
+              />
+              {/* Subtle bottom vignette only — no glow, no gradient overlay */}
+              <div
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent"
+              />
+              {/* Gold corner rule — single ornament */}
+              <span
+                aria-hidden
+                className="absolute left-6 top-6 h-px w-10 bg-[color:var(--color-gold)]"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function TrustItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="inline-flex items-baseline gap-2">
-      <span className="text-ink-3/70">{label}</span>
-      <span className="text-ink">{value}</span>
-    </div>
-  );
-}
-
-function Sep() {
-  return (
-    <span aria-hidden className="hidden h-3 w-px bg-line-strong sm:inline-block" />
   );
 }

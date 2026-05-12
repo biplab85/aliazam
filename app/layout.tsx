@@ -1,39 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
-import { LenisProvider } from "@/lib/lenis-provider";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import { site } from "@/content";
 import "./globals.css";
 
 /**
- * Two fonts only (see task.md §3). Instrument Serif for h1/h2 only;
- * Hanken Grotesk for everything else. CSS vars are wired in globals.css
- * via @theme so Tailwind's font-serif / font-sans classes resolve.
+ * Premium-broker type pairing:
+ *   - Cormorant Garamond (serif) for h1/h2 display — quiet, editorial luxury.
+ *   - Inter (sans) for body, UI, and small caps.
+ * Native scroll only — no smooth-scroll library. Calm motion preferred.
  */
-const instrumentSerif = Instrument_Serif({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-instrument-serif",
+  variable: "--font-cormorant",
   display: "swap",
 });
 
-const hankenGrotesk = Hanken_Grotesk({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-hanken-grotesk",
+  variable: "--font-inter",
   display: "swap",
 });
 
-// Shared description used by both OpenGraph and Twitter so previews stay
-// in sync. Kept short enough to render in full inside a Facebook / LinkedIn
-// / iMessage / Twitter card without truncation.
 const SHARE_DESCRIPTION =
   "Experienced, passionate, and professional realtor in the Greater Toronto Area. Licensed mortgage agent. Since 2010.";
 
 const SHARE_IMAGE = {
-  // Wide brand hero (already has the dark vignette baked in, so overlay text
-  // from social platforms stays legible). 1920×810 ≈ 2.37:1, close to OG's
-  // 1.91:1 ideal — minimal cropping across Facebook, LinkedIn, iMessage.
   url: "/50.webp",
   width: 1920,
   height: 810,
@@ -72,7 +66,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FAFAF7",
+  themeColor: "#F8F6F2",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -84,11 +78,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${hankenGrotesk.variable}`}
+      className={`${cormorant.variable} ${inter.variable}`}
     >
-      <body>
-        <LenisProvider>{children}</LenisProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
