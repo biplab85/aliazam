@@ -11,7 +11,7 @@ export function Listings() {
   const featured = listings.slice(0, 6);
 
   return (
-    <section id="listings" className="bg-bg py-24 md:py-32">
+    <section id="listings" className="bg-bg-muted py-24 md:py-32">
       <div className="container-x">
         <div className="mb-14 md:mb-20 md:flex md:items-end md:justify-between md:gap-12">
           <div className="max-w-2xl">

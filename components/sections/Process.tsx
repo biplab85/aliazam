@@ -7,7 +7,7 @@ import { process as steps, processIntro } from "@/content";
  */
 export function Process() {
   return (
-    <section id="process" className="bg-bg-muted py-24 md:py-32">
+    <section id="process" className="bg-bg py-24 md:py-32">
       <div className="container-x">
         <div className="mb-14 md:mb-20 md:grid md:grid-cols-12 md:items-end md:gap-12">
           <div className="md:col-span-7">
